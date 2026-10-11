@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXORA — All Your Digital Tools. One Place.</title>
+    <meta name="description" content="Platform tools online serbaguna dengan desain futuristik. Generator, kalkulator, text tools, dan alat digital gratis dalam satu tempat.">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#080B14',
+                        cardBg: '#0F172A',
+                        primary: '#4F8CFF',
+                        secondary: '#A855F7',
+                        accent: '#22D3EE',
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts & Lucide Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- QR Code Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #080B14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-panel:hover {
+            border-color: rgba(79, 140, 255, 0.3);
+            box-shadow: 0 0 25px rgba(79, 140, 255, 0.15);
+        }
+        .glow-primary {
+            box-shadow: 0 0 30px rgba(79, 140, 255, 0.35);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #4F8CFF 0%, #A855F7 50%, #22D3EE 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        @keyframes ripple {
+            0% { transform: scale(0); opacity: 0.8; }
+            100% { transform: scale(4); opacity: 0; }
+        }
+        .ripple-effect {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-darkBg text-slate-100 font-sans antialiased selection:bg-primary selection:text-white min-h-screen flex flex-col justify-between overflow-x-hidden">
+
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0 opacity-40">
+        <div class="absolute -top-40 -left-40 w-96 h-96 bg-primary rounded-full filter blur-[120px] animate-pulse-slow"></div>
+        <div class="absolute top-1/2 -right-40 w-96 h-96 bg-secondary rounded-full filter blur-[140px] animate-pulse-slow" style="animation-delay: 2s;"></div>
+        <div class="absolute -bottom-40 left-1/3 w-96 h-96 bg-accent rounded-full filter blur-[130px] animate-pulse-slow" style="animation-delay: 4s;"></div>
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#1f293d0a_1px,transparent_1px),linear-gradient(to_bottom,#1f293d0a_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
+    </div>
+
+    <header class="sticky top-0 z-50 glass-panel border-b border-slate-800/80 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" onclick="switchTab('home')" class="flex items-center gap-3 group focus:outline-none">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-primary via-secondary to-accent p-0.5 shadow-lg shadow-primary/20 group-hover:scale-105 transition-transform">
+                    <div class="w-full h-full bg-darkBg rounded-[10px] flex items-center justify-center">
+                        <i data-lucide="cpu" class="w-6 h-6 text-primary group-hover:rotate-12 transition-transform"></i>
+                    </div>
+                </div>
+                <div>
+                    <span class="text-2xl font-extrabold tracking-wider gradient-text">NEXORA</span>
+                    <span class="block text-[10px] tracking-widest text-slate-400 font-semibold uppercase">Digital Tools</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center gap-1 bg-slate-900/60 p-1.5 rounded-full border border-slate-800 shadow-inner">
+                <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 text-slate-300 hover:text-white hover:bg-slate-800/60">Beranda</button>
+                <button onclick="switchTab('all-tools')" id="nav-all-tools" class="nav-btn px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 text-slate-300 hover:text-white hover:bg-slate-800/60">Semua Tools</button>
+                <button onclick="switchTab('favorites')" id="nav-favorites" class="nav-btn px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 text-slate-300 hover:text-white hover:bg-slate-800/60 flex items-center gap-1.5">
+                    <i data-lucide="heart" class="w-4 h-4 text-rose-500"></i> Favorit <span id="fav-badge" class="bg-rose-500/20 text-rose-300 text-xs px-1.5 py-0.2 rounded-full">0</span>
+                </button>
+                <button onclick="switchTab('about')" id="nav-about" class="nav-btn px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 text-slate-300 hover:text-white hover:bg-slate-800/60">Tentang</button>
+            </nav>
+
+            <!-- Action Controls -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <!-- Sound Toggle -->
+                <button id="sound-toggle-btn" onclick="toggleSound()" title="Sound Effect ON/OFF" class="p-2.5 rounded-xl glass-panel text-slate-300 hover:text-primary hover:border-primary/50 transition-all focus:outline-none relative">
+                    <i data-lucide="volume-2" id="sound-icon" class="w-5 h-5"></i>
+                </button>
+                <!-- Theme Toggle -->
+                <button onclick="toggleTheme()" title="Ganti Tema" class="p-2.5 rounded-xl glass-panel text-slate-300 hover:text-accent hover:border-accent/50 transition-all focus:outline-none">
+                    <i data-lucide="sun" id="theme-icon" class="w-5 h-5"></i>
+                </button>
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2.5 rounded-xl glass-panel text-slate-300 hover:text-white transition-all focus:outline-none">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-slate-800 px-6 py-4 space-y-3">
+            <button onclick="switchTab('home'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded-lg hover:bg-slate-800 font-medium">Beranda</button>
+            <button onclick="switchTab('all-tools'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded-lg hover:bg-slate-800 font-medium">Semua Tools</button>
+            <button onclick="switchTab('favorites'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded-lg hover:bg-slate-800 font-medium flex items-center justify-between">
+                <span>Favorit Saya</span>
+                <span id="mobile-fav-badge" class="bg-rose-500/20 text-rose-300 text-xs px-2 py-0.5 rounded-full">0</span>
+            </button>
+            <button onclick="switchTab('about'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded-lg hover:bg-slate-800 font-medium">Tentang NEXORA</button>
+        </div>
+    </header>
+
+    <main class="flex-grow z-10 relative">
+
+        <!-- TAB: HOME VIEW -->
+        <div id="view-home" class="view-section">
+            <!-- Hero Section -->
+            <section class="relative pt-16 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel text-xs font-semibold text-accent mb-6 shadow-sm animate-bounce">
+                    <i data-lucide="sparkles" class="w-4 h-4"></i> Platform Alat Digital #1 Paling Praktis
+                </div>
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 max-w-4xl mx-auto leading-tight">
+                    Semua Tools Digital, <span class="gradient-text">Dalam Satu Tempat.</span>
+                </h1>
+                <p class="text-base sm:text-lg text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+                    Generator, kalkulator, text tools, dan berbagai alat praktis gratis tanpa batas untuk membantu pekerjaan, kreator, dan produktivitasmu lebih cepat.
+                </p>
+
+                <!-- Search Bar Container -->
+                <div class="max-w-2xl mx-auto relative mb-8">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i data-lucide="search" class="w-5 h-5 text-slate-400"></i>
+                    </div>
+                    <input type="text" id="hero-search" oninput="handleSearch(this.value)" placeholder="Cari tools yang kamu butuhkan (misal: Password, QR Code, Kalkulator)..." class="w-full pl-12 pr-4 py-4 rounded-2xl glass-panel text-slate-100 placeholder-slate-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-base shadow-2xl">
+                    <div class="absolute right-3 top-2.5 hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800/80 text-xs text-slate-400 border border-slate-700">
+                        <span>ESC</span>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-wrap justify-center gap-4 mb-16">
+                    <button onclick="switchTab('all-tools'); playSound('click');" class="px-8 py-4 rounded-2xl bg-gradient-to-r from-primary to-secondary text-white font-bold shadow-lg shadow-primary/25 hover:opacity-95 hover:scale-105 transition-all flex items-center gap-2.5">
+                        <i data-lucide="compass" class="w-5 h-5"></i> Jelajahi Tools
+                    </button>
+                    <button onclick="scrollToCategories(); playSound('click');" class="px-8 py-4 rounded-2xl glass-panel text-slate-200 font-semibold hover:border-slate-600 hover:scale-105 transition-all flex items-center gap-2.5">
+                        <i data-lucide="layers" class="w-5 h-5 text-accent"></i> Kategori Populer
+                    </button>
+                </div>
+
+                <!-- Statistics Bar -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                    <div class="glass-panel p-5 rounded-2xl text-center">
+                        <span id="stat-total-tools" class="block text-3xl font-extrabold gradient-text mb-1">14+</span>
+                        <span class="text-xs text-slate-400 font-medium uppercase tracking-wider">Tools Aktif</span>
+                    </div>
+                    <div class="glass-panel p-5 rounded-2xl text-center">
+                        <span class="block text-3xl font-extrabold gradient-text mb-1">100%</span>
+                        <span class="text-xs text-slate-400 font-medium uppercase tracking-wider">Gratis Selamanya</span>
+                    </div>
+                    <div class="glass-panel p-5 rounded-2xl text-center">
+                        <span class="block text-3xl font-extrabold gradient-text mb-1">0 Detik</span>
+                        <span class="text-xs text-slate-400 font-medium uppercase tracking-wider">Tanpa Instalasi</span>
+                    </div>
+                    <div class="glass-panel p-5 rounded-2xl text-center">
+                        <span class="block text-3xl font-extrabold gradient-text mb-1">Aman</span>
+                        <span class="text-xs text-slate-400 font-medium uppercase tracking-wider">Privasi Terjaga</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ad Placeholder Section 1 -->
+            <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+                <div class="glass-panel p-6 rounded-2xl text-center border border-dashed border-slate-700/80 bg-slate-900/30">
+                    <div class="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-1">Sponsored Advertisement</div>
+                    <p class="text-slate-400 text-sm">Space Iklan Premium NEXORA (Tampil Bersih & Tidak Mengganggu UX)</p>
+                </div>
+            </section>
+
+            <!-- Categories Section -->
+            <section id="categories-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-8">
+                    <div>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold mb-2">Kategori Tools</h2>
+                        <p class="text-slate-400 text-sm sm:text-base">Pilih kategori alat digital yang sesuai dengan kebutuhanmu.</p>
+                    </div>
+                    <button onclick="filterToolsByCategory('all')" class="mt-4 md:mt-0 text-sm font-semibold text-primary hover:text-accent transition-colors flex items-center gap-1">
+                        Lihat Semua Kategori <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <div id="category-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <!-- Dynamic Categories Injected Here -->
+                </div>
+            </section>
+
+            <!-- Featured / Popular Tools Section -->
+            <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold mb-2">Tools Paling Populer</h2>
+                        <p class="text-slate-400 text-sm sm:text-base">Alat yang paling sering digunakan oleh pengguna NEXORA.</p>
+                    </div>
+                </div>
+
+                <div id="featured-tools-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Dynamic Featured Tools Injected Here -->
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB: ALL TOOLS VIEW -->
+        <div id="view-all-tools" class="view-section hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="mb-8">
+                <h1 class="text-3xl sm:text-4xl font-extrabold mb-3">Semua Alat Digital</h1>
+                <p class="text-slate-400">Telusuri seluruh koleksi tools yang tersedia di NEXORA secara lengkap.</p>
+            </div>
+
+            <!-- Filter Pills -->
+            <div id="filter-pills" class="flex flex-wrap gap-2 mb-8">
+                <!-- Injected filter buttons -->
+            </div>
+
+            <!-- Search inside All Tools -->
+            <div class="mb-8">
+                <div class="relative max-w-md">
+                    <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute left-4 top-3.5"></i>
+                    <input type="text" id="all-tools-search" oninput="handleAllToolsSearch(this.value)" placeholder="Cari berdasarkan nama atau fungsi..." class="w-full pl-12 pr-4 py-3 rounded-xl glass-panel text-slate-100 placeholder-slate-400 focus:outline-none focus:border-primary transition-all">
+                </div>
+            </div>
+
+            <!-- Full Tools Grid -->
+            <div id="all-tools-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Injected tools cards -->
+            </div>
+
+            <div id="no-tools-found" class="hidden text-center py-20">
+                <i data-lucide="frown" class="w-16 h-16 text-slate-600 mx-auto mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Tools Tidak Ditemukan</h3>
+                <p class="text-slate-400">Coba kata kunci lain atau pilih kategori yang berbeda.</p>
+            </div>
+        </div>
+
+        <!-- TAB: FAVORITES VIEW -->
+        <div id="view-favorites" class="view-section hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="mb-8">
+                <h1 class="text-3xl sm:text-4xl font-extrabold mb-3">Tools Favorit Saya</h1>
+                <p class="text-slate-400">Daftar alat digital yang telah kamu tandai sebagai favorit untuk akses cepat.</p>
+            </div>
+
+            <div id="favorites-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Injected favorites -->
+            </div>
+
+            <div id="no-favorites" class="hidden text-center py-20">
+                <i data-lucide="heart-off" class="w-16 h-16 text-slate-600 mx-auto mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Belum Ada Favorit</h3>
+                <p class="text-slate-400 mb-6">Klik ikon hati pada kartu tools untuk menambahkannya ke daftar favorit.</p>
+                <button onclick="switchTab('all-tools')" class="px-6 py-3 rounded-xl bg-primary text-white font-semibold shadow-lg shadow-primary/20 hover:scale-105 transition-all">Jelajahi Tools</button>
+            </div>
+        </div>
+
+        <!-- TAB: ABOUT VIEW -->
+        <div id="view-about" class="view-section hidden max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="glass-panel p-8 sm:p-12 rounded-3xl space-y-8">
+                <div>
+                    <span class="text-xs font-bold text-accent uppercase tracking-widest">Tentang Platform</span>
+                    <h1 class="text-3xl sm:text-4xl font-extrabold mt-2 mb-4 gradient-text">NEXORA Digital Ecosystem</h1>
+                    <p class="text-slate-300 leading-relaxed text-base sm:text-lg">
+                        NEXORA adalah platform tools online serbaguna yang dirancang untuk memberikan kemudahan bagi pelajar, mahasiswa, content creator, gamer, programmer, dan masyarakat umum dalam menyelesaikan berbagai tugas digital secara instan, gratis, dan aman.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t border-slate-800">
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                            <i data-lucide="zap" class="w-5 h-5 text-primary"></i> Super Cepat & Ringan
+                        </h3>
+                        <p class="text-slate-400 text-sm">Berjalan sepenuhnya di browser dengan teknologi modern tanpa memerlukan instalasi aplikasi tambahan.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                            <i data-lucide="shield-check" class="w-5 h-5 text-secondary"></i> Privasi & Keamanan
+                        </h3>
+                        <p class="text-slate-400 text-sm">Data password dan teks sensitif diproses secara lokal di perangkatmu dan tidak pernah dikirim ke server luar.</p>
+                    </div>
+                </div>
+
+                <div class="pt-6 border-t border-slate-800 flex flex-wrap items-center justify-between gap-4">
+                    <span class="text-sm text-slate-400">Versi 2.0.4 • Dibuat dengan standar SaaS Profesional</span>
+                    <button onclick="switchTab('home')" class="px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold transition-all">Kembali ke Beranda</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: TOOL WORKSPACE VIEW (MODULAR RENDER) -->
+        <div id="view-tool-workspace" class="view-section hidden max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="mb-6 flex items-center justify-between">
+                <button onclick="backFromToolWorkspace()" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl glass-panel text-slate-300 hover:text-white hover:border-primary/50 transition-all text-sm font-semibold">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali ke Daftar Tools
+                </button>
+                <button id="workspace-fav-btn" onclick="toggleCurrentToolFavorite()" class="p-2.5 rounded-xl glass-panel text-slate-300 hover:text-rose-500 transition-all">
+                    <i data-lucide="heart" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <div class="glass-panel p-6 sm:p-10 rounded-3xl shadow-2xl relative overflow-hidden">
+                <!-- Tool Header -->
+                <div class="flex items-start gap-4 mb-8 pb-6 border-b border-slate-800">
+                    <div id="workspace-tool-icon" class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-primary/20 to-secondary/20 border border-primary/30 flex items-center justify-center text-primary shrink-0">
+                        <!-- Icon injected -->
+                    </div>
+                    <div>
+                        <span id="workspace-tool-category" class="text-xs font-bold text-accent uppercase tracking-wider">Kategori</span>
+                        <h1 id="workspace-tool-title" class="text-2xl sm:text-3xl font-extrabold text-white mt-1 mb-2">Nama Tool</h1>
+                        <p id="workspace-tool-desc" class="text-slate-400 text-sm sm:text-base">Deskripsi lengkap fungsi tool ini.</p>
+                    </div>
+                </div>
+
+                <!-- Tool Interactive Body -->
+                <div id="workspace-tool-content" class="space-y-6">
+                    <!-- Dynamic tool interactive components rendered here -->
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="mt-20 border-t border-slate-800/80 glass-panel py-12 z-10 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-primary to-secondary p-0.5">
+                            <div class="w-full h-full bg-darkBg rounded-[10px] flex items-center justify-center">
+                                <i data-lucide="cpu" class="w-5 h-5 text-primary"></i>
+                            </div>
+                        </div>
+                        <span class="text-xl font-extrabold gradient-text">NEXORA</span>
+                    </div>
+                    <p class="text-slate-400 text-sm">Platform tools online serbaguna dengan performa tinggi dan desain futuristik untuk produktivitas digitalmu.</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">Kategori Populer</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="#" onclick="filterToolsByCategory('Username & Password')" class="hover:text-primary transition-colors">Username & Password</a></li>
+                        <li><a href="#" onclick="filterToolsByCategory('QR Code')" class="hover:text-primary transition-colors">QR Code Generator</a></li>
+                        <li><a href="#" onclick="filterToolsByCategory('Text Tools')" class="hover:text-primary transition-colors">Text & Formatting</a></li>
+                        <li><a href="#" onclick="filterToolsByCategory('Kalkulator')" class="hover:text-primary transition-colors">Kalkulator Pintar</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">Navigasi Utama</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="#" onclick="switchTab('home')" class="hover:text-primary transition-colors">Beranda</a></li>
+                        <li><a href="#" onclick="switchTab('all-tools')" class="hover:text-primary transition-colors">Semua Tools</a></li>
+                        <li><a href="#" onclick="switchTab('favorites')" class="hover:text-primary transition-colors">Favorit Saya</a></li>
+                        <li><a href="#" onclick="switchTab('about')" class="hover:text-primary transition-colors">Tentang Platform</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">Keamanan & Privasi</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-4">Seluruh data password dan teks dienkripsi secara lokal di sisi klien. Kami menghormati privasi penuh pengguna.</p>
+                    <div class="flex items-center gap-2 text-xs text-accent font-semibold">
+                        <i data-lucide="check-circle-2" class="w-4 h-4"></i> Client-Side Processing Only
+                    </div>
+                </div>
+            </div>
+            <div class="pt-8 border-t border-slate-800/60 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+                <p>&copy; 2026 NEXORA Ecosystem. Hak Cipta Dilindungi.</p>
+                <div class="flex gap-6">
+                    <a href="#" onclick="switchTab('about')" class="hover:text-slate-400 transition-colors">Kebijakan Privasi</a>
+                    <a href="#" onclick="switchTab('about')" class="hover:text-slate-400 transition-colors">Ketentuan Layanan</a>
+                    <a href="#" onclick="switchTab('about')" class="hover:text-slate-400 transition-colors">Kontak Developer</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <script>
+        const state = {
+            currentTab: 'home',
+            soundEnabled: localStorage.getItem('nexora_sound') === 'true',
+            favorites: JSON.parse(localStorage.getItem('nexora_favorites') || '[]'),
+            activeCategoryFilter: 'all',
+            currentToolId: null,
+            searchQuery: ''
+        };
+
+        // Master Tools Registry
+        const toolsRegistry = [
+            {
+                id: 'username-gen',
+                name: 'Username Generator',
+                category: 'Username & Password',
+                description: 'Buat nama pengguna unik untuk sosmed & gaming dengan berbagai gaya.',
+                icon: 'at-sign',
+                popular: true
+            },
+            {
+                id: 'password-gen',
+                name: 'Secure Password Generator',
+                category: 'Username & Password',
+                description: 'Hasilkan kata sandi kuat berbasis kriptografi untuk akun aman.',
+                icon: 'key',
+                popular: true
+            },
+            {
+                id: 'qrcode-gen',
+                name: 'QR Code Generator',
+                category: 'QR Code',
+                description: 'Ubah teks atau URL menjadi QR Code siap unduh secara instan.',
+                icon: 'qr-code',
+                popular: true
+            },
+            {
+                id: 'word-char-counter',
+                name: 'Word & Character Counter',
+                category: 'Text Tools',
+                description: 'Hitung jumlah kata, karakter, paragraf, dan estimasi waktu baca.',
+                icon: 'file-text',
+                popular: true
+            },
+            {
+                id: 'text-case-converter',
+                name: 'Text Case Converter',
+                category: 'Text Tools',
+                description: 'Ubah huruf teks menjadi UPPERCASE, lowercase, Title Case, dan lainnya.',
+                icon: 'type',
+                popular: false
+            },
+            {
+                id: 'slug-generator',
+                name: 'URL Slug Generator',
+                category: 'Developer Tools',
+                description: 'Format judul artikel menjadi URL slug bersih yang ramah SEO.',
+                icon: 'link',
+                popular: false
+            },
+            {
+                id: 'math-calculator',
+                name: 'Kalkulator Matematika',
+                category: 'Kalkulator',
+                description: 'Hitung operasi matematika standar dan ilmiah dengan presisi.',
+                icon: 'calculator',
+                popular: true
+            },
+            {
+                id: 'discount-calculator',
+                name: 'Kalkulator Diskon & Harga',
+                category: 'Kalkulator',
+                description: 'Hitung potongan harga diskon belanja dan selisih persentase.',
+                icon: 'percent',
+                popular: false
+            },
+            {
+                id: 'unit-converter',
+                name: 'Konverter Satuan',
+                category: 'Kalkulator',
+                description: 'Konversi satuan panjang, berat, dan suhu dengan mudah.',
+                icon: 'sliders',
+                popular: false
+            },
+            {
+                id: 'bio-generator',
+                name: 'Social Media Bio Generator',
+                category: 'Bio & Caption',
+                description: 'Buat bio aesthetic & profesional untuk Instagram, TikTok, & WhatsApp.',
+                icon: 'user-check',
+                popular: true
+            },
+            {
+                id: 'caption-generator',
+                name: 'Caption Generator',
+                category: 'Bio & Caption',
+                description: 'Hasilkan caption menarik dengan hashtag otomatis untuk kontenmu.',
+                icon: 'message-square',
+                popular: true
+            },
+            {
+                id: 'random-number',
+                name: 'Random Number Generator',
+                category: 'Random Generator',
+                description: 'Pilih angka acak dari rentang minimum dan maksimum tertentu.',
+                icon: 'hash',
+                popular: false
+            },
+            {
+                id: 'random-choice',
+                name: 'Random Choice Picker',
+                category: 'Random Generator',
+                description: 'Masukkan beberapa opsi dan biarkan sistem memilih satu secara acak.',
+                icon: 'shuffle',
+                popular: false
+            }
+        ];
+
+        const categoriesList = [
+            { name: 'Username & Password', icon: 'key', desc: 'Keamanan & Akun' },
+            { name: 'QR Code', icon: 'qr-code', desc: 'Kode Pemindaian' },
+            { name: 'Text Tools', icon: 'file-text', desc: 'Pengolah Teks' },
+            { name: 'Kalkulator', icon: 'calculator', desc: 'Hitung & Konversi' },
+            { name: 'Bio & Caption', icon: 'sparkles', desc: 'Media Sosial' },
+            { name: 'Developer Tools', icon: 'code', desc: 'Alat Programmer' },
+            { name: 'Random Generator', icon: 'shuffle', desc: 'Pengundian Acak' }
+        ];
+
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playSound(type) {
+            if (!state.soundEnabled) return;
+            try {
+                initAudio();
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                const now = audioCtx.currentTime;
+
+                if (type === 'click') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(600, now);
+                    osc.frequency.exponentialRampToValueAtTime(300, now + 0.05);
+                    gain.gain.setValueAtTime(0.1, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+                    osc.start(now);
+                    osc.stop(now + 0.05);
+                } else if (type === 'success') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(440, now);
+                    osc.frequency.setValueAtTime(554.37, now + 0.08);
+                    osc.frequency.setValueAtTime(659.25, now + 0.16);
+                    gain.gain.setValueAtTime(0.1, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+                    osc.start(now);
+                    osc.stop(now + 0.25);
+                } else if (type === 'toggle') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(500, now);
+                    osc.frequency.exponentialRampToValueAtTime(800, now + 0.04);
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.04);
+                    osc.start(now);
+                    osc.stop(now + 0.04);
+                }
+            } catch (e) {
+                console.log('Audio error:', e);
+            }
+        }
+
+        function toggleSound() {
+            state.soundEnabled = !state.soundEnabled;
+            localStorage.setItem('nexora_sound', state.soundEnabled);
+            const icon = document.getElementById('sound-icon');
+            if (state.soundEnabled) {
+                icon.setAttribute('data-lucide', 'volume-2');
+                showToast('Sound Effect Diaktifkan', 'success');
+                playSound('toggle');
+            } else {
+                icon.setAttribute('data-lucide', 'volume-x');
+                showToast('Sound Effect Dimatikan', 'info');
+            }
+            lucide.createIcons();
+        }
+
+        function toggleTheme() {
+            playSound('toggle');
+            const html = document.documentElement;
+            const icon = document.getElementById('theme-icon');
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                icon.setAttribute('data-lucide', 'moon');
+                showToast('Mode Terang Diaktifkan', 'info');
+            } else {
+                html.classList.add('dark');
+                icon.setAttribute('data-lucide', 'sun');
+                showToast('Mode Gelap Diaktifkan', 'info');
+            }
+            lucide.createIcons();
+        }
+
+        function switchTab(tabId) {
+            playSound('click');
+            state.currentTab = tabId;
+            document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
+            
+            if (tabId === 'home') {
+                document.getElementById('view-home').classList.remove('hidden');
+            } else if (tabId === 'all-tools') {
+                document.getElementById('view-all-tools').classList.remove('hidden');
+                renderAllToolsGrid();
+                renderFilterPills();
+            } else if (tabId === 'favorites') {
+                document.getElementById('view-favorites').classList.remove('hidden');
+                renderFavoritesGrid();
+            } else if (tabId === 'about') {
+                document.getElementById('view-about').classList.remove('hidden');
+            } else if (tabId === 'workspace') {
+                document.getElementById('view-tool-workspace').classList.remove('hidden');
+            }
+
+            // Update active nav styles
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('bg-slate-800', 'text-white'));
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            playSound('toggle');
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bgClass = type === 'success' ? 'bg-emerald-900/90 border-emerald-500 text-emerald-100' : 'bg-slate-900/90 border-slate-700 text-slate-100';
+            const iconName = type === 'success' ? 'check-circle' : 'info';
+            
+            toast.className = `glass-panel px-4 py-3 rounded-xl border shadow-xl flex items-center gap-3 transition-all duration-300 translate-y-4 opacity-0 ${bgClass}`;
+            toast.innerHTML = `<i data-lucide="${iconName}" class="w-5 h-5 shrink-0"></i><span class="text-sm font-medium">${message}</span>`;
+            
+            container.appendChild(toast);
+            lucide.createIcons();
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-4', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-4', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function copyToClipboard(text, btnElement) {
+            playSound('success');
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast('Berhasil disalin ke clipboard!');
+                    if (btnElement) {
+                        const originalHTML = btnElement.innerHTML;
+                        btnElement.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i> Tersalin`;
+                        lucide.createIcons();
+                        setTimeout(() => {
+                            btnElement.innerHTML = originalHTML;
+                            lucide.createIcons();
+                        }, 2000);
+                    }
+                }).catch(() => fallbackCopyText(text, btnElement));
+            } else {
+                fallbackCopyText(text, btnElement);
+            }
+        }
+
+        function fallbackCopyText(text, btnElement) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            document.body.appendChild(textarea);
+            textarea.focus();
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast('Berhasil disalin ke clipboard!');
+            } catch (err) {
+                showToast('Gagal menyalin teks', 'error');
+            }
+            document.body.removeChild(textarea);
+        }
+
+        function renderHomeCategories() {
+            const container = document.getElementById('category-grid');
+            if (!container) return;
+            container.innerHTML = categoriesList.map(cat => `
+                <div onclick="filterAndOpenCategory('${cat.name}')" class="glass-panel p-5 rounded-2xl cursor-pointer hover:border-primary/50 hover:scale-[1.02] transition-all group">
+                    <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-3 group-hover:bg-primary group-hover:text-white transition-all">
+                        <i data-lucide="${cat.icon}" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-bold text-white text-sm mb-1">${cat.name}</h3>
+                    <p class="text-xs text-slate-400">${cat.desc}</p>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function renderFeaturedTools() {
+            const container = document.getElementById('featured-tools-grid');
+            if (!container) return;
+            const featured = toolsRegistry.filter(t => t.popular);
+            container.innerHTML = featured.map(tool => renderToolCardHTML(tool)).join('');
+            lucide.createIcons();
+            updateFavBadges();
+        }
+
+        function renderToolCardHTML(tool) {
+            const isFav = state.favorites.includes(tool.id);
+            return `
+                <div class="glass-panel p-6 rounded-2xl flex flex-col justify-between hover:border-primary/50 transition-all group relative">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                                <i data-lucide="${tool.icon}" class="w-6 h-6"></i>
+                            </div>
+                            <button onclick="toggleFavorite('${tool.id}', event)" class="p-2 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-rose-500 transition-colors">
+                                <i data-lucide="heart" class="w-5 h-5 ${isFav ? 'fill-rose-500 text-rose-500' : ''}"></i>
+                            </button>
+                        </div>
+                        <span class="text-[10px] font-bold text-accent uppercase tracking-wider">${tool.category}</span>
+                        <h3 class="text-lg font-bold text-white mt-1 mb-2">${tool.name}</h3>
+                        <p class="text-slate-400 text-sm mb-6">${tool.description}</p>
+                    </div>
+                    <button onclick="openToolWorkspace('${tool.id}')" class="w-full py-3 rounded-xl bg-slate-800/80 hover:bg-primary hover:text-white text-slate-200 text-sm font-semibold transition-all flex items-center justify-center gap-2">
+                        <span>Gunakan Tool</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            `;
+        }
+
+        function renderAllToolsGrid(filter = 'all', query = '') {
+            const container = document.getElementById('all-tools-grid');
+            const noFound = document.getElementById('no-tools-found');
+            if (!container) return;
+
+            let filtered = toolsRegistry;
+            if (filter !== 'all') {
+                filtered = filtered.filter(t => t.category === filter);
+            }
+            if (query.trim() !== '') {
+                const q = query.toLowerCase();
+                filtered = filtered.filter(t => t.name.toLowerCase().includes(q) || t.description.toLowerCase().includes(q) || t.category.toLowerCase().includes(q));
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = '';
+                noFound.classList.remove('hidden');
+                return;
+            }
+
+            noFound.classList.add('hidden');
+            container.innerHTML = filtered.map(tool => renderToolCardHTML(tool)).join('');
+            lucide.createIcons();
+            updateFavBadges();
+        }
+
+        function renderFilterPills() {
+            const container = document.getElementById('filter-pills');
+            if (!container) return;
+            const cats = ['all', ...new Set(toolsRegistry.map(t => t.category))];
+            container.innerHTML = cats.map(cat => `
+                <button onclick="filterToolsByCategory('${cat}')" class="px-4 py-2 rounded-xl text-xs font-semibold transition-all ${state.activeCategoryFilter === cat ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'glass-panel text-slate-300 hover:bg-slate-800'}">
+                    ${cat === 'all' ? 'Semua Kategori' : cat}
+                </button>
+            `).join('');
+        }
+
+        function filterToolsByCategory(cat) {
+            playSound('click');
+            state.activeCategoryFilter = cat;
+            switchTab('all-tools');
+            renderAllToolsGrid(cat, state.searchQuery);
+            renderFilterPills();
+        }
+
+        function filterAndOpenCategory(catName) {
+            filterToolsByCategory(catName);
+        }
+
+        function handleSearch(query) {
+            state.searchQuery = query;
+            if (query.trim().length > 0) {
+                switchTab('all-tools');
+                document.getElementById('all-tools-search').value = query;
+                renderAllToolsGrid(state.activeCategoryFilter, query);
+            }
+        }
+
+        function handleAllToolsSearch(query) {
+            state.searchQuery = query;
+            renderAllToolsGrid(state.activeCategoryFilter, query);
+        }
+
+        function toggleFavorite(toolId, event) {
+            event.stopPropagation();
+            playSound('toggle');
+            const idx = state.favorites.indexOf(toolId);
+            if (idx > -1) {
+                state.favorites.splice(idx, 1);
+                showToast('Dihapus dari favorit', 'info');
+            } else {
+                state.favorites.push(toolId);
+                showToast('Ditambahkan ke favorit!', 'success');
+            }
+            localStorage.setItem('nexora_favorites', JSON.stringify(state.favorites));
+            updateFavBadges();
+            
+            // Re-render current view if applicable
+            if (state.currentTab === 'all-tools') {
+                renderAllToolsGrid(state.activeCategoryFilter, state.searchQuery);
+            } else if (state.currentTab === 'favorites') {
+                renderFavoritesGrid();
+            } else if (state.currentTab === 'workspace') {
+                updateWorkspaceFavButton();
+            } else {
+                renderFeaturedTools();
+            }
+        }
+
+        function updateFavBadges() {
+            const count = state.favorites.length;
+            document.getElementById('fav-badge').innerText = count;
+            document.getElementById('mobile-fav-badge').innerText = count;
+        }
+
+        function renderFavoritesGrid() {
+            const container = document.getElementById('favorites-grid');
+            const noFav = document.getElementById('no-favorites');
+            if (!container) return;
+
+            const favTools = toolsRegistry.filter(t => state.favorites.includes(t.id));
+            if (favTools.length === 0) {
+                container.innerHTML = '';
+                noFav.classList.remove('hidden');
+                return;
+            }
+
+            noFav.classList.add('hidden');
+            container.innerHTML = favTools.map(tool => renderToolCardHTML(tool)).join('');
+            lucide.createIcons();
+        }
+
+        function scrollToCategories() {
+            document.getElementById('categories-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function openToolWorkspace(toolId) {
+            playSound('click');
+            state.currentToolId = toolId;
+            const tool = toolsRegistry.find(t => t.id === toolId);
+            if (!tool) return;
+
+            document.getElementById('workspace-tool-icon').innerHTML = `<i data-lucide="${tool.icon}" class="w-7 h-7"></i>`;
+            document.getElementById('workspace-tool-category').innerText = tool.category;
+            document.getElementById('workspace-tool-title').innerText = tool.name;
+            document.getElementById('workspace-tool-desc').innerText = tool.description;
+
+            updateWorkspaceFavButton();
+            renderToolInteractiveModule(toolId);
+            switchTab('workspace');
+        }
+
+        function backFromToolWorkspace() {
+            playSound('click');
+            switchTab('all-tools');
+        }
+
+        function updateWorkspaceFavButton() {
+            const btn = document.getElementById('workspace-fav-btn');
+            const isFav = state.favorites.includes(state.currentToolId);
+            btn.innerHTML = `<i data-lucide="heart" class="w-5 h-5 ${isFav ? 'fill-rose-500 text-rose-500' : ''}"></i>`;
+            lucide.createIcons();
+        }
+
+        function toggleCurrentToolFavorite() {
+            if (state.currentToolId) {
+                toggleFavorite(state.currentToolId, { stopPropagation: () => {} });
+                updateWorkspaceFavButton();
+            }
+        }
+
+        function renderToolInteractiveModule(toolId) {
+            const container = document.getElementById('workspace-tool-content');
+            container.innerHTML = '';
+
+            switch(toolId) {
+                case 'username-gen':
+                    container.innerHTML = getUsernameGeneratorHTML();
+                    initUsernameGenerator();
+                    break;
+                case 'password-gen':
+                    container.innerHTML = getPasswordGeneratorHTML();
+                    initPasswordGenerator();
+                    break;
+                case 'qrcode-gen':
+                    container.innerHTML = getQRCodeGeneratorHTML();
+                    initQRCodeGenerator();
+                    break;
+                case 'word-char-counter':
+                    container.innerHTML = getWordCounterHTML();
+                    initWordCounter();
+                    break;
+                case 'text-case-converter':
+                    container.innerHTML = getTextCaseConverterHTML();
+                    initTextCaseConverter();
+                    break;
+                case 'slug-generator':
+                    container.innerHTML = getSlugGeneratorHTML();
+                    initSlugGenerator();
+                    break;
+                case 'math-calculator':
+                    container.innerHTML = getMathCalculatorHTML();
+                    initMathCalculator();
+                    break;
+                case 'discount-calculator':
+                    container.innerHTML = getDiscountCalculatorHTML();
+                    initDiscountCalculator();
+                    break;
+                case 'unit-converter':
+                    container.innerHTML = getUnitConverterHTML();
+                    initUnitConverter();
+                    break;
+                case 'bio-generator':
+                    container.innerHTML = getBioGeneratorHTML();
+                    initBioGenerator();
+                    break;
+                case 'caption-generator':
+                    container.innerHTML = getCaptionGeneratorHTML();
+                    initCaptionGenerator();
+                    break;
+                case 'random-number':
+                    container.innerHTML = getRandomNumberHTML();
+                    initRandomNumber();
+                    break;
+                case 'random-choice':
+                    container.innerHTML = getRandomChoiceHTML();
+                    initRandomChoice();
+                    break;
+                default:
+                    container.innerHTML = `<p class="text-slate-400">Modul sedang dimuat...</p>`;
+            }
+            lucide.createIcons();
+        }
+
+        function getUsernameGeneratorHTML() {
+            return `
+                <div class="space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-300 mb-2">Kata Dasar / Nama</label>
+                            <input type="text" id="uname-base" value="nexora" placeholder="Contoh: gamer, pro, dev" class="w-full px-4 py-3 rounded-xl glass-panel text-slate-100 focus:outline-none focus:border-primary">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-300 mb-2">Gaya Username</label>
+                            <select id="uname-style" class="w-full px-4 py-3 rounded-xl glass-panel text-slate-100 focus:outline-none focus:border-primary bg-slate-900">
+                                <option value="gaming">Gaming & Esports</option>
+                                <option value="aesthetic">Aesthetic & Clean</option>
+                                <option value="professional">Profesional / Korporat</option>
+                                <option value="random">Random Campuran</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-4 items-center">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" id="uname-numbers" checked class="w-4 h-4 rounded text-primary focus:ring-primary bg-slate-900 border-slate-700">
+                            <span class="text-sm text-slate-300">Tambahkan Angka</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" id="uname-underscore" checked class="w-4 h-4 rounded text-primary focus:ring-primary bg-slate-900 border-slate-700">
+                            <span class="text-sm text-slate-300">Gunakan Underscore (_)</span>
+                        </label>
+                    </div>
+                    <button onclick="generateUsernames()" class="w-full py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-bold shadow-lg shadow-primary/25 hover:opacity-95 transition-all flex items-center justify-center gap-2">
+                        <i data-lucide="refresh-cw" class="w-5 h-5"></i> Generate Username
+                    </button>
+                    <div id="uname-results" class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4"></div>
+                </div>
+            `;
+        }
+
+        function initUsernameGenerator() { generateUsernames(); }
+
+        function generateUsernames() {
+            playSound('click');
+            const base = document.getElementById('uname-base').value.trim() || 'user';
+            const style = document.getElementById('uname-style').value;
+            const useNumbers = document.getElementById('uname-numbers').checked;
+            const useUnderscore = document.getElementById('uname-underscore').checked;
+            
+            const suffixes = ['99', 'x', 'pro', 'official', 'z', 'nexus', 'prime', 'hub'];
+            const prefixes = ['the', 'real', 'xX', 'mr', 'dr'];
+            const aestheticWords = ['vibe', 'soul', 'cloud', 'moon', 'frost', 'echo'];
+
+            let results = [];
+            for (let i = 0; i < 6; i++) {
+                let res = base;
+                if (style === 'gaming') {
+                    res = (Math.random() > 0.5 ? 'xX_' : '') + base + (useUnderscore ? '_' : '') + (useNumbers ? Math.floor(Math.random() * 900 + 100) : '');
+                } else if (style === 'aesthetic') {
+                    const rndWord = aestheticWords[Math.floor(Math.random() * aestheticWords.length)];
+                    res = base + (useUnderscore ? '_' : '.') + rndWord;
+                } else if (style === 'professional') {
+                    res = base + (useUnderscore ? '_' : '.') + ['id', 'dev', 'official', 'media'][Math.floor(Math.random() * 4)];
+                } else {
+                    res = prefixes[Math.floor(Math.random() * prefixes.length)] + base + (useNumbers ? Math.floor(Math.random() * 99) : '');
+                }
+                results.push(res);
+            }
+
+            const container = document.getElementById('uname-results');
+            container.innerHTML = results.map(u => `
+                <div class="glass-panel p-4 rounded-xl flex items-center justify-between border border-slate-800">
+                    <span class="font-mono text-white font-semibold">${u}</span>
+                    <button onclick="copyToClipboard('${u}', this)" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-primary hover:text-white text-xs font-semibold transition-all flex items-center gap-1">
+                        <i data-lucide="copy" class="w-3.5 h-3.5"></i> Salin
+                    </button>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function getPasswordGeneratorHTML() {
+            return `
+                <div class="space-y-6">
+                    <div class="glass-panel p-4 rounded-2xl flex items-center justify-between border border-slate-800">
+                        <span id="pwd-output" class="font-mono text-xl sm:text-2xl text-accent font-bold tracking-wider select-all break-all">NEXORA#2026!Secure</span>
+                        <div class="flex items-center gap-2">
+                            <button onclick="copyToClipboard(document.getElementById('pwd-output').innerText, this)" class="p-2.5 rounded-xl bg-slate-800 hover:bg-primary text-white transition-all">
+                                <i data-lucide="copy" class="w-5 h-5"></i>
+                            </button>
+                            <button onclick="generatePassword()" class="p-2.5 rounded-xl bg-slate-800 hover:bg-secondary text-white transition-all">
+                                <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm font-semibold mb-2">
+                            <span class="text-slate-300">Panjang Password: <span id="pwd-len-val" class="text-primary">16</span> Karakter</span>
+                        </div>
+                        <input type="range" id="pwd-length" min="8" max="64" value="16" oninput="document.getElementById('pwd-len-val').innerText=this.value; generatePassword();" class="w-full accent-primary cursor-pointer">
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <label class="flex items-center gap-2 cursor-pointer glass-panel p-3 rounded-xl">
+                            <input type="checkbox" id="pwd-upper" checked onchange="generatePassword()" class="w-4 h-4 rounded text-primary bg-slate-900 border-slate-700">
+                            <span class="text-xs text-slate-300">Huruf Besar (A-Z)</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer glass-panel p-3 rounded-xl">
+                            <input type="checkbox" id="pwd-lower" checked onchange="generatePassword()" class="w-4 h-4 rounded text-primary bg-slate-900 border-slate-700">
+                            <span class="text-xs text-slate-300">Huruf Kecil (a-z)</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer glass-panel p-3 rounded-xl">
+                            <input type="checkbox" id="pwd-nums" checked onchange="generatePassword()" class="w-4 h-4 rounded text-primary bg-slate-900 border-slate-700">
+                            <span class="text-xs text-slate-300">Angka (0-9)</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer glass-panel p-3 rounded-xl">
+                            <input type="checkbox" id="pwd-symbols" checked onchange="generatePassword()" class="w-4 h-4 rounded text-primary bg-slate-900 border-slate-700">
+                            <span class="text-xs text-slate-300">Simbol (!@#$)</span>
+                        </label>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs text-slate-400">Kekuatan Password:</span>
+                        <div id="pwd-strength-bar" class="flex-grow h-2 rounded-full bg-slate-800 overflow-hidden">
+                            <div id="pwd-strength-fill" class="h-full bg-emerald-500 w-full transition-all"></div>
+                        </div>
+                        <span id="pwd-strength-text" class="text-xs font-bold text-emerald-400">Sangat Kuat</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function initPasswordGenerator() { generatePassword(); }
+
+        function generatePassword() {
+            const length = parseInt(document.getElementById('pwd-length').value);
+            const upper = document.getElementById('pwd-upper').checked;
+            const lower = document.getElementById('pwd-lower').checked;
+            const nums = document.getElementById('pwd-nums').checked;
+            const symbols = document.getElementById('pwd-symbols').checked;
+
+            let chars = '';
+            if (upper) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            if (lower) chars += 'abcdefghijklmnopqrstuvwxyz';
+            if (nums) chars += '0123456789';
+            if (symbols) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+
+            if (!chars) {
+                document.getElementById('pwd-output').innerText = 'Pilih minimal satu kriteria karakter!';
+                return;
+            }
+
+            let password = '';
+            const array = new Uint32Array(length);
+            window.crypto.getRandomValues(array);
+            for (let i = 0; i < length; i++) {
+                password += chars[array[i] % chars.length];
+            }
+
+            document.getElementById('pwd-output').innerText = password;
+            
+            // Strength calculation
+            let score = 0;
+            if (length >= 12) score++;
+            if (length >= 20) score++;
+            if (upper && lower) score++;
+            if (nums && symbols) score++;
+
+            const fill = document.getElementById('pwd-strength-fill');
+            const text = document.getElementById('pwd-strength-text');
+            if (score <= 1) {
+                fill.style.width = '33%'; fill.className = 'h-full bg-rose-500 transition-all'; text.innerText = 'Lemah'; text.className = 'text-xs font-bold text-rose-400';
+            } else if (score <= 3) {
+                fill.style.width = '66%'; fill.className = 'h-full bg-amber-500 transition-all'; text.innerText = 'Sedang'; text.className = 'text-xs font-bold text-amber-400';
+            } else {
+                fill.style.width = '100%'; fill.className = 'h-full bg-emerald-500 transition-all'; text.innerText = 'Sangat Kuat'; text.className = 'text-xs font-bold text-emerald-400';
+            }
+        }
+
+        function getQRCodeGeneratorHTML() {
+            return `
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-300 mb-2">Teks atau URL untuk QR Code</label>
+                        <textarea id="qr-input" rows="3" placeholder="Masukkan URL website atau teks rahasia di sini..." oninput="generateQRCode()" class="w-full px-4 py-3 rounded-xl glass-panel text-slate-100 focus:outline-none focus:border-primary">https://nexora-tools.app</textarea>
+                    </div>
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4">
+                        <div id="qrcode-container" class="p-4 bg-white rounded-2xl shadow-2xl flex items-center justify-center min-w-[200px] min-h-[200px]"></div>
+                        <div class="space-y-3 w-full sm:w-auto">
+                            <button onclick="generateQRCode()" class="w-full px-6 py-3 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-bold shadow-lg shadow-primary/25 hover:opacity-95 transition-all flex items-center justify-center gap-2">
+                                <i data-lucide="qr-code" class="w-5 h-5"></i> Generate QR Code
+                            </button>
+                            <button onclick="downloadQRCode()" class="w-full px-6 py-3 rounded-xl glass-panel text-slate-200 font-semibold hover:border-primary transition-all flex items-center justify-center gap-2">
+                                <i data-lucide="download" class="w-5 h-5"></i> Unduh PNG
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        let qrCodeInstance = null;
+        function initQRCodeGenerator() {
+            generateQRCode();
+        }
+
+        function generateQRCode() {
+            playSound('click');
+            const text = document.getElementById('qr-input').value.trim();
+            const container = document.getElementById('qrcode-container');
+            container.innerHTML = '';
+            if (!text) {
+                container.innerHTML = '<span class="text-xs text-slate-500">Input kosong</span>';
+                return;
+            }
+            qrCodeInstance = new QRCode(container, {
+                text: text,
+                width: 180,
+                height: 180,
+                colorDark: "#080B14",
+                colorLight: "#ffffff
